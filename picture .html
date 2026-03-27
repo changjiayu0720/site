@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS 动画课堂：小红车跑起来了！</title>
+    <style>
+        /* ==============================
+           1. 场景容器：蓝天白云青山
+           ============================== */
+        body {
+            margin: 0;
+            overflow: hidden; /* 防止出现滚动条 */
+            font-family: Arial, sans-serif;
+        }
+
+        .scene {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #87CEEB 50%, #82C17D 50%, #82C17D 100%);
+            position: relative;
+        }
+
+        /* 简单的白云 */
+        .cloud {
+            width: 100px; height: 40px;
+            background: white;
+            border-radius: 50px;
+            position: absolute;
+            top: 15%; left: 20%;
+        }
+        .cloud:after {
+            content: ''; width: 50px; height: 50px;
+            background: white; border-radius: 50%;
+            position: absolute; top: -25px; left: 15px;
+        }
+
+        /* ==============================
+           2. 马路：无限延伸
+           ============================== */
+        .road {
+            width: 100%;
+            height: 150px;
+            background-color: #555;
+            position: absolute;
+            bottom: 10%;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 马路中间的虚线 */
+        .road::after {
+            content: '';
+            width: 100%;
+            height: 8px;
+            background-image: linear-gradient(to right, white 50%, transparent 50%);
+            background-size: 80px 100%;
+            animation: road-move 1s linear infinite; /* 马路虚线移动，模拟速度 */
+        }
+
+        /* ==============================
+           3. 主角：可爱小车 (静态样式)
+           ============================== */
+        .car {
+            width: 150px;
+            height: 100px;
+            background-color: #E74C3C; /* 投影仪代码里的红色 #3498db */
+            border-radius: 60px 80px 15px 15px;
+            position: absolute;
+            bottom: 25px; /* 调整高度使其在马路上 */
+            left: -160px; /* 初始位置：屏幕左侧外 */
+            box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 10;
+
+            /* ——————————— 核心部分 start ——————————— */
+
+            /* A. 投影仪里的过渡效果：鼠标悬停时平滑变化 */
+            transition: all 0.5s ease;
+
+            /* B. 结合黑板上的 Keyframes：让它自动跑起来 */
+            animation: car-run 6s linear infinite; /* 6秒跑一圈，无限循环 */
+
+            /* ———————————— 核心部分 end ———————————— */
+        }
+
+        /* 车顶、车窗、车轮的细节装饰 */
+        .car::before { /* 车窗 */
+            content: ''; position: absolute;
+            top: 20px; left: 30px; width: 80px; height: 35px;
+            background-color: #ECF0F1; border-radius: 10px 10px 0 0;
+        }
+        .wheel {
+            width: 35px; height: 35px; background: #333;
+            border-radius: 50%; border: 4px solid #fff;
+            position: absolute; bottom: -15px;
+        }
+        .wheel.front { right: 20px; }
+        .wheel.back { left: 20px; }
+
+        /* ==============================
+           4. 交互效果 (即照片中的 hover 代码)
+           ============================== */
+        /* C. 投影仪里的悬停效果：变色并放大 */
+        .car:hover {
+            background-color: #2980b9; /* 变成深蓝色 */
+            transform: scale(1.2);     /* 放大 1.2 倍 */
+            /* 提示：当 hover 动画和 keyframes 动画同时使用 transform 时，
+               通常会把它们分开写在不同的容器上，这里为了简化演示直接覆盖了。 */
+        }
+
+        /* ==============================
+           5. 动画定义 (黑板和投影仪概念结合)
+           ============================= */
+
+        /* 定义小车“跑”的轨迹：从左外跑到底左外 */
+        @keyframes car-run {
+            0% {
+                left: -160px; /* 屏幕左侧外 */
+            }
+            100% {
+                left: 100%; /* 屏幕右侧外 */
+            }
+        }
+
+        /* 定义马路虚线的移动，模拟路面向后 */
+        @keyframes road-move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: -80px 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <div class="cloud"></div>
+        <div class="road"></div>
+        
+        <div class="car">
+            <div class="wheel front"></div>
+            <div class="wheel back"></div>
+        </div>
+    </div>
+
+</body>
+</html>
