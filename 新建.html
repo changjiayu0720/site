@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>大尺寸动画演示</title>
+    <style>
+        .container {
+            /* 调大显示框尺寸，方便观察 */
+            width: 600px; 
+            height: 400px;
+            
+            border: 5px solid #2c3e50;
+            border-radius: 12px;
+            margin: 50px auto;
+            overflow: hidden; /* 确保内容不溢出 */
+            background-color: #000;
+            
+            /* 引入你的长图 */
+            background-image: url('https://yqx.grazy.cn/public/uploads/image/course/20201016/18e15b4e4aab78e53f19c3a83f73a8ec.jpg');
+            background-repeat: repeat-x; /* 横向平铺，实现无缝滚动感 */
+            background-size: auto 100%; /* 高度撑满框，宽度等比缩放 */
+            
+            /* 动画设置：10秒走完一轮，线性无限循环 */
+            animation: slideBG 10s linear infinite;
+        }
+
+        @keyframes slideBG {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                /* 根据图片实际长度，这里移动到 -1720px */
+                background-position: -1720px 0;
+            }
+        }
+
+        /* 基础页面样式 */
+        body {
+            background-color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 style="color: #34495e;">背景滚动预览 (大尺寸版)</h2>
+    <div class="container"></div>
+    <p>当前容器大小：600px * 400px</p >
+
+</body>
+</html>
