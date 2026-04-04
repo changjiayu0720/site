@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>一元二次方程求解器</title>
+</head>
+<body>
+    <h1>一元二次方程求解 (Lab 51)</h1>
+    <p>请刷新页面以重新开始计算。</p >
+
+    <script>
+        // (1) 调用 prompt 函数三次获取系数 a, b, c
+        let inputA = prompt("请输入系数 a:");
+        let inputB = prompt("请输入系数 b:");
+        let inputC = prompt("请输入系数 c:");
+
+        // (2) 使用 parseFloat 将字符串转换为数字
+        let a = parseFloat(inputA);
+        let b = parseFloat(inputB);
+        let c = parseFloat(inputC);
+
+        // (3) 计算 delta = b*b - 4*a*c
+        // 根据题目假设：delta >= 0 且 a > 0
+        let delta = b * b - 4 * a * c;
+
+        // (4) 计算 x1 和 x2
+        let x1 = (-b + Math.sqrt(delta)) / (2 * a);
+        let x2 = (-b - Math.sqrt(delta)) / (2 * a);
+
+        // (5) 使用 alert 告知用户结果
+        alert("方程的根为：\nx1 = " + x1 + "\nx2 = " + x2);
+
+        // (6) 使用 console.log 在控制台输出同样的结果
+        console.log("系数: a=" + a + ", b=" + b + ", c=" + c);
+        console.log("Delta = " + delta);
+        console.log("结果: x1 = " + x1 + ", x2 = " + x2);
+    </script>
+</body>
+</html>
