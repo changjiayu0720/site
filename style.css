@@ -1,0 +1,230 @@
+/* 基础重置与背景渐变 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); /* 天蓝到淡紫渐变 */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #2c3e50;
+}
+
+.game-container {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 1000px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #1e3c72;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* 控制区样式 */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 15px;
+  background: #f8f9fa;
+  padding: 15px 25px;
+  border-radius: 12px;
+  border: 1px solid #eef2f3;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#disk-slider {
+  cursor: pointer;
+  accent-color: #2a69ac;
+}
+
+.button-group button {
+  background-color: #2a69ac;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-group button:hover {
+  background-color: #1c4b82;
+  transform: translateY(-2px);
+}
+
+.button-group button:disabled {
+  background-color: #b0c4de;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.stats {
+  font-size: 16px;
+}
+
+/* ===================================================
+   3D 核心：汉诺塔棋盘区域
+   =================================================== */
+.game-board {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 400px;
+  margin: 40px auto 20px auto;
+  perspective: 1000px; /* 3D 透视关键 */
+  transform-style: preserve-3d;
+}
+
+/* 柱子容器 */
+.peg {
+  position: relative;
+  width: 140px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  transform: rotateX(24deg); /* 产生真实的俯视 3D 视觉 */
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.peg:hover {
+  transform: rotateX(24deg) translateY(-5px);
+}
+
+/* 柱身 */
+.peg-shaft {
+  width: 18px;
+  height: 240px;
+  background: linear-gradient(to right, #8b5a2b, #d7a15c, #8b5a2b); /* 仿木纹3D质感 */
+  border-radius: 8px 8px 0 0;
+  box-shadow: inset -2px 0 5px rgba(0,0,0,0.4), 3px 5px 12px rgba(0,0,0,0.3);
+}
+
+/* 盘子放置区 */
+.disks-container {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse; /* 底部为栈底，往上堆叠 */
+  align-items: center;
+  pointer-events: none; /* 避免盘子阻挡柱子的点击事件 */
+  transform-style: preserve-3d;
+}
+
+/* 柱子底座 */
+.peg-base {
+  width: 140px;
+  height: 30px;
+  background: linear-gradient(180deg, #4a2e1b, #2f1d11);
+  border-radius: 6px;
+  text-align: center;
+  color: #f1c40f;
+  font-weight: bold;
+  line-height: 30px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+}
+
+/* ===================================================
+   盘子 3D 样式
+   =================================================== */
+.disk {
+  height: 25px;
+  border-radius: 12px;
+  margin-bottom: 2px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0.2) 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 2px 0 rgba(255,255,255,0.5);
+  transform-style: preserve-3d;
+  transition: all 0.3s ease;
+}
+
+/* 被选中盘子的微悬浮效果 */
+.disk.selected {
+  transform: translateY(-25px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(231, 76, 60, 0.6);
+  animation: diskFloat 1.5s ease-in-out infinite alternate;
+}
+
+/* ===================================================
+   动画关键帧
+   =================================================== */
+
+/* 1. 悬浮动画 */
+@keyframes diskFloat {
+  0% { transform: translateY(-20px); }
+  100% { transform: translateY(-30px); }
+}
+
+/* 2. 错误操作横向抖动 */
+@keyframes shakeWarning {
+  0%, 100% { transform: rotateX(24deg) translateX(0); }
+  20%, 60% { transform: rotateX(24deg) translateX(-10px); }
+  40%, 80% { transform: rotateX(24deg) translateX(10px); }
+}
+.shake {
+  animation: shakeWarning 0.4s ease-in-out;
+}
+
+/* ===================================================
+   信息提示弹窗
+   =================================================== */
+#message-area {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.info { background-color: #3498db; }
+.warning { background-color: #e74c3c; animation: bounce 0.3s ease; }
+.success { background-color: #2ecc71; }
+.hidden { opacity: 0; pointer-events: none; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}

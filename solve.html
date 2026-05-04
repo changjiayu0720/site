@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>一元二次方程求解器</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tower of Hanoi - 3D Learning Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>一元二次方程求解 (Lab 51)</h1>
-    <p>请刷新页面以重新开始计算。</p >
+  <div class="game-container">
+    <header>
+      <h1>Tower of Hanoi · 3D Learning Game</h1>
+      <p class="subtitle">Web Design Course Project (HTML + CSS + JS)</p >
+      
+      <div class="controls">
+        <div class="control-group">
+          <label for="disk-slider">盘子数量: <span id="disk-count-val">5</span></label>
+          <input type="range" id="disk-slider" min="3" max="8" value="5">
+        </div>
+        
+        <div class="button-group">
+          <button id="reset-btn">重置游戏</button>
+          <button id="auto-solve-btn">自动演示</button>
+        </div>
 
-    <script>
-        // (1) 调用 prompt 函数三次获取系数 a, b, c
-        let inputA = prompt("请输入系数 a:");
-        let inputB = prompt("请输入系数 b:");
-        let inputC = prompt("请输入系数 c:");
+        <div class="stats">
+          <span>移动步数: <strong id="move-count">0</strong></span>
+        </div>
+      </div>
+    </header>
 
-        // (2) 使用 parseFloat 将字符串转换为数字
-        let a = parseFloat(inputA);
-        let b = parseFloat(inputB);
-        let c = parseFloat(inputC);
+    <main class="game-board">
+      <div class="peg" id="peg-0" data-index="0">
+        <div class="peg-shaft"></div>
+        <div class="disks-container"></div>
+        <div class="peg-base">Peg A</div>
+      </div>
+      <div class="peg" id="peg-1" data-index="1">
+        <div class="peg-shaft"></div>
+        <div class="disks-container"></div>
+        <div class="peg-base">Peg B</div>
+      </div>
+      <div class="peg" id="peg-2" data-index="2">
+        <div class="peg-shaft"></div>
+        <div class="disks-container"></div>
+        <div class="peg-base">Peg C</div>
+      </div>
+    </main>
 
-        // (3) 计算 delta = b*b - 4*a*c
-        // 根据题目假设：delta >= 0 且 a > 0
-        let delta = b * b - 4 * a * c;
+    <div id="message-area" class="hidden"></div>
+  </div>
 
-        // (4) 计算 x1 和 x2
-        let x1 = (-b + Math.sqrt(delta)) / (2 * a);
-        let x2 = (-b - Math.sqrt(delta)) / (2 * a);
-
-        // (5) 使用 alert 告知用户结果
-        alert("方程的根为：\nx1 = " + x1 + "\nx2 = " + x2);
-
-        // (6) 使用 console.log 在控制台输出同样的结果
-        console.log("系数: a=" + a + ", b=" + b + ", c=" + c);
-        console.log("Delta = " + delta);
-        console.log("结果: x1 = " + x1 + ", x2 = " + x2);
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
+
